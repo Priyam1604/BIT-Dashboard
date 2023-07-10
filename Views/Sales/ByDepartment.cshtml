@@ -1,0 +1,52 @@
+﻿<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-12">
+
+            <h2>Sales by Department</h2>
+
+            <div>
+                <canvas id="bar-chart" width="600" height="250"></canvas>
+            </div>
+
+            <script>
+
+            var departments = @Html.Raw(Json.Encode(ViewBag.DEPARTMENTS));
+            var revenues = @Html.Raw(Json.Encode(ViewBag.REVENUES));
+            var colours = @Html.Raw(Json.Encode(ViewBag.COLOURS));
+
+            new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+                labels: departments,
+                datasets: [{
+                    label: "Sales (NZD)",
+                    backgroundColor: colours,                    
+                    minBarLength: 2,
+                    borderWidth: 1,
+                    data: revenues
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+            </script>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p>&copy; @DateTime.Now.Year - BridgedIT</p>
+        </div>
+    </div>
+</body>
+</html>

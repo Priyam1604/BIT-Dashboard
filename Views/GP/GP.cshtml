@@ -1,0 +1,70 @@
+﻿<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-12">
+
+            <h2>Gross Profit</h2>
+
+            <div>
+                <canvas id="myChart" width="700" height="250"></canvas>
+            </div>
+
+            <script>
+
+                var currentYearValues = @Html.Raw(Json.Encode(ViewBag.CURRENTVALUES));
+                var lastYearValues = @Html.Raw(Json.Encode(ViewBag.LASTYEARVALUES));
+                var tyBudgedtValue = @Html.Raw(Json.Encode(ViewBag.BUDGETVALUES));
+                var monthLabels = @Html.Raw(Json.Encode(ViewBag.MONTHS));
+
+                var currentLabel = @Html.Raw(Json.Encode(ViewBag.CURRENTYLABEL));
+                var lastLabel = @Html.Raw(Json.Encode(ViewBag.LASTYLABEL));
+
+                var canvas = document.getElementById('myChart');
+
+                var data = {
+                    labels: monthLabels,
+                    datasets: [
+                    {
+                        label: "Current Year Budget",
+                        data: tyBudgedtValue,
+                            backgroundColor: "rgba(76, 238, 41, 0.4)"
+                    },
+                    {
+                        label: lastLabel,
+                        data: lastYearValues,
+                        backgroundColor: "rgba(41, 125, 238, 0.4)"
+                    },
+                    {
+                        label: currentLabel,
+                        data: currentYearValues,
+                        backgroundColor: "rgba(238, 166, 41, 0.4)"
+                    }
+                    ]
+                };
+
+                var myBarChart = Chart.Line(canvas, {
+                    data: data,
+                    //options: option
+                });
+
+            </script>
+
+        </div>
+    </div>
+    <div>
+        <h1>
+
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p>&copy; @DateTime.Now.Year - BridgedIT</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

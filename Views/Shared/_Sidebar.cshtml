@@ -1,0 +1,54 @@
+﻿@using WebHelpers.Mvc5
+<aside class="main-sidebar">
+    <section class="sidebar">
+        @* BEGIN Search *@
+        @*<form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>*@
+        @* END Search *@
+        @* BEGIN Menu *@
+        <ul class="sidebar-menu" data-widget="tree">
+            @*<li class="header">HEADER</li>*@
+            <li class="@Url.IsLinkActive("MainScreen", "Home")">
+                <a href="@Url.Action("MainScreen", "Home")"><i class="fa fa-home"></i> <span>Home</span></a>
+            </li>
+            <li class="@Url.IsLinkActive("HourlySales", "HourlySales")">
+                <a href="@Url.Action("HourlySales", "HourlySales")"><i class="fa fa-hourglass"></i> <span>Sales by Hour</span></a>
+            </li>
+            <li class="@Url.IsLinkActive("LastMonthsSales", "LastnMontsSales")">
+                <a href="@Url.Action("LastMonthsSales", "LastnMontsSales")"><i class="fa fa-line-chart"></i> <span>Sales by Month</span></a>
+            </li>
+            <li class="@Url.IsLinkActive("ByDepartment", "Sales")">
+                <a href="@Url.Action("ByDepartment", "Sales")"><i class="fa fa-bar-chart"></i> <span>Sales By Department</span></a>
+            </li>
+            <li class="@Url.IsLinkActive("Index", "FinancialReport")">
+                <a href="@Url.Action("Index", "FinancialReport")"><i class="fa fa-area-chart"></i> <span>Financial Report</span></a>
+            </li>
+            <li class="@Url.IsLinkActive("GP", "GP")">
+                <a href="@Url.Action("GP", "GP")"><i class="fa fa-money"></i> <span>Gross Profit</span></a>
+            </li>
+            @*<li class="treeview">
+            <a href="#">
+                <i class="fa fa-link"></i> <span>Multilevel</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li class="@Url.IsLinkActive("LandingIndex", "Landing")">
+                    <a href="@Url.IsLinkActive("LandingIndex", "Landing")"><i class="fa fa-link"></i><span>Landing Link</span></a>
+                </li>
+                <li><a href="#">Link in level 2</a></li>
+            </ul>
+        </li>*@
+        </ul>
+        @* END Menu *@
+    </section>
+</aside>

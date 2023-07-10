@@ -1,0 +1,366 @@
+﻿@using WebDashboard.Models
+@using GridMvc.Html
+@model WebDashboard.Models.ViewModel
+
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>
+</head>
+
+<body>      
+
+    <div class="row">
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-red">
+                <span class="info-box-icon" style="height:102px"><i class="fa fa-area-chart"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text" style="font-size:14pt">Average Basket Value</span>
+                    <span class="info-box-number" style="font-size:18pt">
+                        @Html.ViewBag.ThisAvgVal
+                    </span>
+                    <!-- The progress section is optional -->
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @Html.ViewBag.AvgProgress%"></div>
+                    </div>
+                    <span class="progress-description">
+                        @Html.ViewBag.AvgProgress % @Html.ViewBag.AvgDirecttion from last year
+                    </span>
+                </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-green">
+                <span class="info-box-icon" style="height:102px"><i class="fa fa-dollar"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text" style="font-size:14pt">Total Sales</span>
+                    <span class="info-box-number" style="font-size:18pt">$@Html.ViewBag.ThisSales</span>
+                    <!-- The progress section is optional -->
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @Html.ViewBag.TsalesProgress%"></div>
+                    </div>
+                    <span class="progress-description">
+                        @Html.ViewBag.TsalesProgress% @Html.ViewBag.SalesDirection from last year todate
+                    </span>
+                </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-orange">
+                <span class="info-box-icon" style="height:102px"><i class="fa fa-line-chart"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text" style="font-size:14pt">Average Units Sold Per Basket</span>
+                    <span class="info-box-number" style="font-size:18pt">@Html.ViewBag.ThisUPT</span>
+                    <!-- The progress section is optional -->
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @Html.ViewBag.UPTprogress%"></div>
+                    </div>
+                    <span class="progress-description">
+                        @Html.ViewBag.UPTprogress% @Html.ViewBag.UPTDirection from last year
+                    </span>
+                </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-light-blue">
+                <span class="info-box-icon" style="height:102px"><i class="fa fa-male"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text" style="font-size:14pt">Average Ticket Value</span>
+                    <span class="info-box-number" style="font-size:18pt">@Html.ViewBag.ThisYFT</span>
+                    <!-- The progress section is optional -->
+                    <div class="progress">
+                        <div class="progress-bar" style="width: @Html.ViewBag.YFTProgress%"></div>
+                    </div>
+                    <span class="progress-description">
+                        @Html.ViewBag.YFTProgress% @Html.ViewBag.YFTDirection from last year
+                    </span>
+                </div><!-- /.info-box-content -->
+            </div><!-- /.info-box -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4">
+
+            <h2>Sales by Day</h2>
+
+            <div>
+                <canvas id="myChart" width="400" height="200"></canvas>
+            </div>
+
+            <script>
+
+        var currentYearValues = @Html.Raw(Json.Encode(ViewBag.CURRENTVALUES));
+        var lastYearValues = @Html.Raw(Json.Encode(ViewBag.LASTYEARVALUES));
+        var monthLabels = @Html.Raw(Json.Encode(ViewBag.MONTHS));
+
+        var currentLabel = @Html.Raw(Json.Encode(ViewBag.CURRENTYLABEL));
+        var lastLabel = @Html.Raw(Json.Encode(ViewBag.LASTYLABEL));
+
+        var canvas = document.getElementById('myChart');
+
+        var data = {
+            labels: monthLabels,
+            datasets: [{
+                label: "This Week",
+                data: currentYearValues,
+                backgroundColor: "rgba(153,255,51,0.4)"
+            }, {
+                label: "Last Week",
+                data: lastYearValues,
+                backgroundColor: "rgba(255,153,0,0.4)"
+            }]
+        };
+        
+        var myBarChart = Chart.Line(canvas, {
+            data: data,
+            //options: option
+        });
+
+            </script>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4">
+
+            <h2>Top 5 Departments</h2>
+
+            <div>
+                <canvas id="pie-chart" width="400" height="230"></canvas>
+            </div>
+
+            <script>
+
+        var departments = @Html.Raw(Json.Encode(ViewBag.DEPARTMENTS));
+        var revenues = @Html.Raw(Json.Encode(ViewBag.REVENUES));
+        var colours = @Html.Raw(Json.Encode(ViewBag.COLOURS));
+
+        new Chart(document.getElementById("pie-chart"), {
+            type: 'bar',
+            data: {
+                labels: departments,
+                datasets: [{
+                    label: "Sales (NZD)",
+                    backgroundColor: colours,
+                    data: revenues
+                }]
+            }
+        });
+
+            </script>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4">
+
+            <h2>Average Basket Value by Day</h2>
+
+            <div>
+                <canvas id="myChartBasket" width="400" height="200"></canvas>
+            </div>
+
+            <script>
+
+                var dbasketValue = @Html.Raw(Json.Encode(ViewBag.DBASKETVAL));
+                var strSalesDay = @Html.Raw(Json.Encode(ViewBag.DSALESDAY));
+                var dLbasketValue = @Html.Raw(Json.Encode(ViewBag.DLBASKETVAL));
+
+                var canvasBasket = document.getElementById('myChartBasket');
+
+                var data = {
+                    labels: strSalesDay,
+                    datasets: [{
+                        label: "This Week",
+                        data: dbasketValue,
+                        backgroundColor: "rgba(255, 99, 71, 0.6)"
+                    }, {
+                            label: "Last Week",
+                            data: dLbasketValue,
+                            backgroundColor: "rgba(172, 230, 172, 1)"
+                        }
+                    ]
+                };
+                
+                var myBarChart = Chart.Line(canvasBasket, {
+                                        data: data,
+                                    });
+
+            </script>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-12 col-md-8">
+
+            <div>
+                <h2>Hourly Sales</h2>
+                <canvas id="myChartHourly" width="350" height="100"></canvas>
+            </div>
+
+            <script>
+
+            var currentYearValues = @Html.Raw(Json.Encode(ViewBag.CURRENTHOURS));
+            var lastYearValues = @Html.Raw(Json.Encode(ViewBag.LASTHOURS));
+            var monthLabels = @Html.Raw(Json.Encode(ViewBag.SALESHOURS));
+
+            var currentLabel = @Html.Raw(Json.Encode(ViewBag.CURRENTHYEAR));
+            var lastLabel = @Html.Raw(Json.Encode(ViewBag.LASTHYEAR));
+
+            var canvasHourly = document.getElementById('myChartHourly');
+
+            var data = {
+                labels: monthLabels,
+                datasets: [{
+                    label: currentLabel,
+                    data: currentYearValues,
+                    backgroundColor: "rgba(50, 153, 255, 0.4)"
+                }, {
+                    label: lastLabel,
+                    data: lastYearValues,
+                    backgroundColor: "rgba(108, 77, 203, 0.4)"
+                }]
+            };
+            var option = {
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        gridLines: {
+                            display: true,
+                            color: "rgba(255,99,132,0.2)"
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: true
+                        }
+                    }]
+                }
+            };
+
+            var myBarChart = Chart.Line(canvasHourly, {
+                data: data
+                //,
+                //options: option
+            });
+
+            </script>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            <h2>Top 5 Fast Moving Items</h2>
+            <div style="width:800px;">
+                @Html.Grid(Model.FastMovingItems).Columns(columns =>
+               {
+                   columns.Add(c => c.Itemcode).Titled("UPC");
+                   columns.Add(c => c.Sku).Titled("SKU");
+                   columns.Add(c => c.ItemName).Titled("Description");
+                   columns.Add(c => c.Quantity).Titled("Quantity");
+                   columns.Add(c => c.Value).Titled("Unit Price ($)");
+               }).WithPaging(5).Sortable(true)
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4">
+
+            <h2>Sales by User</h2>
+
+            <div>
+                <canvas id="pie-chart1" width="400" height="200"></canvas>
+            </div>
+
+            <script>
+
+        var cashireNames = @Html.Raw(Json.Encode(ViewBag.CASHIRE));
+        var totalsales = @Html.Raw(Json.Encode(ViewBag.CSALES));
+        var linecolours = @Html.Raw(Json.Encode(ViewBag.CCOLOURS));
+
+        new Chart(document.getElementById("pie-chart1"), {
+            type: 'pie',
+            data: {
+                labels: cashireNames,
+                datasets: [{
+                    label: "Sales (NZD)",
+                    backgroundColor: linecolours,
+                    data: totalsales
+                }]
+            }
+        });
+
+            </script>
+
+        </div>
+
+
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            <h2>Sales by Station</h2>
+            <div>
+                <canvas id="pie-chartStation" width="400" height="200"></canvas>
+            </div>
+            <script>
+                var stations = @Html.Raw(Json.Encode(ViewBag.ISTATION));
+                var stSales = @Html.Raw(Json.Encode(ViewBag.DTSALES));
+                var stColours = @Html.Raw(Json.Encode(ViewBag.STCOLOUR));
+
+                    new Chart(document.getElementById("pie-chartStation"), {
+                    type: 'pie',
+                    data: {
+                        labels: stations,
+                        datasets: [{
+                            label: "Sales (NZD)",
+                            backgroundColor: stColours,
+                            data: stSales
+                        }]
+                    }
+                });
+            </script>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4">
+            <h2>Payment Type</h2>
+            <div>
+                <canvas id="pie-chartMedia" width="400" height="200"></canvas>
+            </div>
+            <script>
+                var mstations = @Html.Raw(Json.Encode(ViewBag.MSTATION));
+                var msales = @Html.Raw(Json.Encode(ViewBag.MSALES));
+                var mColours = @Html.Raw(Json.Encode(ViewBag.SMCOLOUR));
+
+                new Chart(document.getElementById("pie-chartMedia"), {
+                    type: 'pie',
+                    data: {
+                        labels: mstations,
+                        datasets: [{
+                            label: "Sales (NZD)",
+                            backgroundColor: mColours,
+                            data: msales
+                        }]
+                    }
+                });
+            </script>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p>&copy; @DateTime.Now.Year - BridgedIT</p>
+        </div>
+    </div>
+
+</body>
+
+
+</html>
+
+

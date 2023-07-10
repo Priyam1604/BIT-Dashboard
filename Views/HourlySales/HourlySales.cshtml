@@ -1,0 +1,59 @@
+﻿<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-sm-12">
+
+            <div>
+                <h2>Hourly Sales</h2>
+                <canvas id="myChartHourly" width="700" height="300"></canvas>
+            </div>
+
+            <script>
+
+            var currentYearValues = @Html.Raw(Json.Encode(ViewBag.CURRENTHOURS));
+            var lastYearValues = @Html.Raw(Json.Encode(ViewBag.LASTHOURS));
+            var monthLabels = @Html.Raw(Json.Encode(ViewBag.SALESHOURS));
+
+            var currentLabel = @Html.Raw(Json.Encode(ViewBag.CURRENTHYEAR));
+            var lastLabel = @Html.Raw(Json.Encode(ViewBag.LASTHYEAR));
+
+            var canvasHourly = document.getElementById('myChartHourly');
+
+            var data = {
+                labels: monthLabels,
+                datasets: [{
+                    label: currentLabel,
+                    data: currentYearValues,
+                    backgroundColor: "rgba(50, 153, 255, 0.4)"
+                }, {
+                    label: lastLabel,
+                    data: lastYearValues,
+                    backgroundColor: "rgba(108, 77, 203, 0.4)"
+                }]
+            };           
+            var myBarChart = Chart.Line(canvasHourly, {
+                data: data,                
+            });
+
+            </script>
+
+        </div>
+    </div>
+    <div class="row">
+        <h2>
+
+        </h2>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p>&copy; @DateTime.Now.Year - BridgedIT</p>
+        </div>
+    </div>
+
+</body>
+
+</html>
+

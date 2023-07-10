@@ -1,0 +1,86 @@
+﻿@using GridMvc.Html
+@*@model IEnumerable<WebDashboard.Models.FinancialReport>*@
+@model Tuple<List<WebDashboard.Models.Attributes.FinancialReportAttributes>, List<WebDashboard.Models.Attributes.FinancialReportAttributes>, List<WebDashboard.Models.Attributes.FinancialReportAttributes>, List<WebDashboard.Models.Attributes.FinancialReportAttributes>>
+
+<html>
+<head>    
+    <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/gridmvc.min.js")"></script>   
+</head>
+<body>
+
+    <h1>Financial Report - @Model.Item1[0].runningdate </h1>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <h2>Medias</h2>
+            <div style="width:700px;">
+                @Html.Grid(Model.Item1).Columns(columns =>
+               {
+                   columns.Add(c => c.Station).Titled("Station");
+                   columns.Add(c => c.MediaName).Titled("Medias");
+                   columns.Add(c => c.Payments).Titled("Payments");
+                   columns.Add(c => c.Refunds).Titled("Refunds");
+                   columns.Add(c => c.FeeTotal).Titled("Fee Inc");
+                   columns.Add(c => c.Total).Titled("Total");
+               }).WithPaging(20).Sortable(true)
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <h2>Types</h2>
+            <div style="width:700px;">
+                @Html.Grid(Model.Item2).Columns(columns =>
+               {
+                   columns.Add(c => c.Station).Titled("Station");
+                   columns.Add(c => c.MediaName).Titled("Transactions by type");
+                   columns.Add(c => c.Payments).Titled("Payments");
+                   columns.Add(c => c.Refunds).Titled("Refunds");
+                   columns.Add(c => c.FeeTotal).Titled("Net Total");
+                   columns.Add(c => c.Total).Titled("Total");
+               }).WithPaging(20).Sortable(true)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <h2>Totals by Medias</h2>
+            <div style="width:700px;">
+                @Html.Grid(Model.Item3).Columns(columns =>
+           {
+               //columns.Add(c => c.Station).Titled("Station");
+               columns.Add(c => c.MediaName).Titled("Medias");
+               columns.Add(c => c.Payments).Titled("Payments");
+               columns.Add(c => c.Refunds).Titled("Refunds");
+               columns.Add(c => c.FeeTotal).Titled("Fee Inc");
+               columns.Add(c => c.Total).Titled("Total");
+           }).WithPaging(20).Sortable(true)
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+            <h2>Totals by Types</h2>
+            <div style="width:700px;">
+                @Html.Grid(Model.Item4).Columns(columns =>
+           {
+               //columns.Add(c => c.Station).Titled("Station");
+               columns.Add(c => c.MediaName).Titled("Transactions by type");
+               columns.Add(c => c.Payments).Titled("Payments");
+               columns.Add(c => c.Refunds).Titled("Refunds");
+               columns.Add(c => c.FeeTotal).Titled("Net Total");
+               columns.Add(c => c.Total).Titled("Total");
+           }).WithPaging(20).Sortable(true)
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+       
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <p>&copy; @DateTime.Now.Year - BridgedIT</p>
+        </div>
+    </div>
+</body>
+
+</html>
